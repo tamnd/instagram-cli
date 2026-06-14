@@ -4,9 +4,10 @@ description: "Model a real instagram record and expose it as a command, a route,
 weight: 10
 ---
 
-The scaffold ships one example type, `page`. Real work means modelling the
-records instagram actually serves. You do that in two files, and every surface
-updates itself.
+v0.1.0 ships `profile`, `posts`, `post`, `reel`, and `raw`. Adding another
+operation, or another record type, means modelling it in two files, and every
+surface updates itself. The walkthrough below uses a small generic `item` to
+show the wiring; the real records live in `instagram/instagram.go`.
 
 ## 1. Model the record
 
@@ -81,7 +82,8 @@ Two flags shape how a host treats an operation:
 - **`List: true`** marks a member-lister for a parent resource. It answers
   `ant ls`. A list op should emit records that are themselves addressable
   (often a lightweight stub of a resolver type), so every member is a URI a host
-  can follow. The example `links` op does this with page stubs.
+  can follow. The `posts` op does this: it lists a profile's recent posts, and
+  each one is an addressable `instagram://post/` record.
 
 ## Map errors to exit codes
 

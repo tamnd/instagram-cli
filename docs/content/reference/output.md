@@ -35,7 +35,7 @@ ig <command> -o raw     # the underlying bytes, unformatted
 Keep only the fields you want:
 
 ```bash
-ig <command> --fields id,title,url
+ig profile instagram --fields username,follower_count,url
 ```
 
 `--no-header` drops the header row in `table` and `csv` output, which helps when
@@ -44,10 +44,10 @@ a downstream tool expects bare rows.
 ## Templating rows
 
 For full control over each line, apply a Go text/template. Fields are the JSON
-keys, capitalised:
+keys on the record:
 
 ```bash
-ig <command> --template '{{.URL}} {{.Title}}'
+ig profile instagram --template '{{.username}} {{.follower_count}}'
 ```
 
 ## Why auto-detection helps

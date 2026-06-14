@@ -42,6 +42,6 @@ Flags win over environment variables, which win over the built-in defaults.
 session fills a local database without a separate import step:
 
 ```bash
-ig page <path> --db out.db        # SQLite file
-ig page <path> --db 'postgres://...'
+ig posts instagram --db out.db        # SQLite file
+ig posts instagram --db 'postgres://...'
 ```

@@ -7,26 +7,28 @@ heroPrimaryURL: "/getting-started/quick-start/"
 heroPrimaryText: "Get started"
 ---
 
-`ig` reads public instagram data over plain HTTPS, shapes it into
-clean records, and gets out of your way.
+`ig` reads public Instagram data over plain HTTPS, shapes it into
+clean records, and gets out of your way. No API key, no login, no cookie.
 
 ```bash
-ig page <path>            # fetch one page as a record
-ig page <path> -o json    # as JSON, ready for jq
-ig links <path>           # the pages it links to, each addressable
-ig serve --addr :7777     # the same operations over HTTP
+ig profile instagram                # one profile record
+ig posts instagram -n 12            # the recent posts on a profile
+ig post DZf6PYtGyay                 # one post by shortcode
+ig serve --addr :7777               # the same operations over HTTP
 ```
 
 There is nothing to sign up for and nothing to run alongside it. Output adapts
 to where it goes: an aligned table on your terminal, JSONL the moment you pipe
-it somewhere.
+it somewhere. Every record carries its own `url` and a `source` field that says
+where it came from: `api` for the exact counts on the profile plane, `ssr` for
+the rounded counts Instagram prints on a post page.
 
 ## Two ways to use it
 
-- **As a command** for reading instagram by hand or in a script. Start with
+- **As a command** for reading Instagram by hand or in a script. Start with
   the [quick start](/getting-started/quick-start/).
 - **As a resource-URI driver** so a host like
-  [ant](https://github.com/tamnd/ant) can address instagram as
+  [ant](https://github.com/tamnd/ant) can address Instagram as
   `instagram://` URIs and follow links across sites. See
   [resource URIs](/guides/resource-uris/).
 

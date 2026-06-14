@@ -9,10 +9,8 @@ featured: true
 Each guide is built around a job rather than a command. They assume you have run
 the [quick start](/getting-started/quick-start/).
 
-- [Add a command](/guides/adding-a-command/) — model a real instagram record
+- [Add a command](/guides/adding-a-command/): model an Instagram record
   and turn it into a command, a route, and a tool at once.
-- [Resource URIs](/guides/resource-uris/) — use ig as a
-  `database/sql`-style driver so a host can address instagram as
+- [Resource URIs](/guides/resource-uris/): use ig as a
+  `database/sql`-style driver so a host can address Instagram as
   `instagram://` URIs.
-
-Add one guide per real task as you build out ig.

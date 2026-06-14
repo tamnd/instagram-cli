@@ -4,11 +4,11 @@ description: "Use ig as a database/sql-style driver so a host program can addres
 weight: 20
 ---
 
-`ig` is a command line, but the `instagram` Go package is also a
-small driver that makes instagram addressable as a resource URI. A host
+`ig` is a command line, and the `instagram` Go package is also a
+small driver that makes Instagram addressable as a resource URI. A host
 program registers it the way a program registers a database driver with
 `database/sql`, then dereferences `instagram://` URIs without knowing
-anything about how instagram is fetched.
+anything about how Instagram is fetched.
 
 The host that does this today is [ant](https://github.com/tamnd/ant), a single
 binary that puts one URI namespace over a family of site tools. The examples
@@ -28,41 +28,43 @@ host `instagram.com`. The standalone `ig` binary does not change.
 
 ## Addressing records
 
-A URI is `scheme://authority/id`. The scaffold ships one type:
+A URI is `scheme://authority/id`. The driver exposes three types:
 
-| URI                              | What it is                              |
-| -------------------------------- | --------------------------------------- |
-| `instagram://page/<path>`    | a page, keyed by its path on instagram.com |
+| URI                                  | What it is                                  |
+| ------------------------------------ | ------------------------------------------- |
+| `instagram://profile/<username>`     | a profile, keyed by username                |
+| `instagram://post/<shortcode>`       | a post, keyed by its shortcode              |
+| `instagram://reel/<shortcode>`       | a reel, keyed by its shortcode              |
 
 ```bash
-ant get instagram://page/<path>    # the page record
-ant cat instagram://page/<path>    # just the body text
-ant url instagram://page/<path>    # the live https URL
-ant resolve https://instagram.com/<path> # a pasted link, back to its URI
+ant get instagram://profile/instagram    # the profile record
+ant get instagram://post/DZf6PYtGyay      # one post
+ant cat instagram://profile/instagram     # just the biography text
+ant url instagram://post/DZf6PYtGyay      # the live https URL
 ```
 
-As you add resolver operations in `instagram/domain.go`, each new `URIType`
-becomes another addressable authority here, with no extra wiring. See
-[add a command](/guides/adding-a-command/).
+`ant cat` prints the `body` of a record, which is the biography for a profile
+and the caption for a post or reel. `ant url` returns the live https URL each
+record carries.
 
 ## Walking the graph
 
-`ls` lists the members of a collection, and every member is itself an
+`ls` lists the recent posts on a profile, and every member is itself an
 addressable URI, so a host can follow the graph and write it to disk:
 
 ```bash
-ant ls     instagram://page/<path>             # the pages this one links to
-ant export instagram://page/<path> --follow 1 --to ./data
+ant ls     instagram://profile/instagram             # the recent posts
+ant export instagram://profile/instagram --follow 1 --to ./data
 ```
 
-The example `links` op emits page stubs, so each listed member is a
-`instagram://page/` URI in its own right. When you model edges between your
-real records with `kit:"link"` tags, `ant export --follow` and `ant graph` walk
-those edges too, across tools when a link points at another site's scheme.
+Each listed post is an `instagram://post/<shortcode>` URI in its own right, so
+`ant get`, `ant cat`, and `ant url` all work on it. Because `ig profile` and
+`ig posts` ride the API plane, these resolve from a residential connection and
+are walled from a datacenter IP, the same as the commands.
 
 ## Why this is the same code
 
 The driver and the binary share one definition per operation. A resolver op
-answers both `ig page` on the command line and `ant get
-instagram://page/...` through a host, from the same handler and the same
+answers both `ig profile` on the command line and `ant get
+instagram://profile/...` through a host, from the same handler and the same
 client. There is no second implementation to keep in step.
