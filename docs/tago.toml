@@ -1,0 +1,10 @@
+title       = "ig"
+baseURL     = "https://instagram-cli.tamnd.com/"
+description = "ig reads public Instagram data and prints clean, pipeable records. No API key, no login."
+contentDir  = "content"
+outputDir   = "public"
+theme       = "tago-doks"
+syntaxHighlight = "true"
+
+[params]
+github = "https://github.com/tamnd/instagram-cli"
